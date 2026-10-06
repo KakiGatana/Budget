@@ -1,4 +1,4 @@
-# Budget à enveloppes
+# PollyPocket
 
 Appli web installable (PWA) : salaire perso ou à deux, revenus en plus, charges fixes avec historique, dépenses par catégorie et par semaine, enveloppes avec alertes, épargne et tickets resto.
 
