@@ -16,7 +16,7 @@
 <title>PollyPocket</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..800;1,9..144,500..700&family=Nunito:wght@400..800&display=swap">
 <style>
 /* Layout : appli mobile en une colonne, alignée à gauche. Une carte corail signature pour le reste à vivre, le reste calme ; barre de navigation flottante prune avec le + au centre. */
 :root{
@@ -27,8 +27,8 @@
   --shadow:0 1px 2px rgba(31,26,46,.04),0 8px 24px rgba(31,26,46,.06);
   --c1:#FF5B3A; --c2:#6C4CF1; --c3:#1FB5A3; --c4:#F5A623; --c5:#E64C8C; --c6:#3A8DFF; --c7:#8BC34A; --c8:#A35CD6; --c9:#FF8A65; --c10:#5E6B8C; --c11:#B4ADC4; --c12:#C2185B; --c13:#B8960B; --c14:#0E8F6E; --c15:#7A4B2A;
   --e1:#FFE1D8; --e2:#E4DDFF; --e3:#D3F3EE; --e4:#FFEDCC; --e5:#FCDCEA; --e6:#DAE9FF; --e7:#E5F4D2; --e8:#F0DFFA; --e9:#FFE6DC; --e10:#E1E5EF; --e11:#F9D3E1; --e12:#FBF1C4; --e13:#CDEFE4; --e14:#EFE2D6; --e15:#F4F4F6;
-  --display:"Unbounded","Arial Black",system-ui,sans-serif;
-  --body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --display:"Fraunces","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --body:"Nunito","Avenir Next",system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#1B1218; --surface:#271B23; --sunk:#34242E; --ink:#F8EEF3; --muted:#B79DAD; --line:#3B2A35; --dot:#4C2A3D;
@@ -53,7 +53,7 @@
 body{background-color:var(--bg);background-image:radial-gradient(var(--dot) 3.5px,transparent 4px),radial-gradient(var(--dot) 3.5px,transparent 4px);background-size:30px 30px;background-position:0 0,15px 15px;color:var(--ink);font:15px/1.5 var(--body);font-variant-numeric:tabular-nums;padding-inline:16px;padding-block:0 120px;-webkit-font-smoothing:antialiased}
 .wrap{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
 h1,h2{margin:0;text-wrap:balance}
-h2{font-size:1.08rem;font-weight:800;letter-spacing:-.01em}
+h2{font-family:var(--display);font-size:1.22rem;font-weight:700;letter-spacing:-.005em;font-variation-settings:'opsz' 36}
 button,input,select{font:inherit;color:inherit}
 button{cursor:pointer;-webkit-tap-highlight-color:transparent}
 :focus-visible{outline:2.5px solid var(--c2);outline-offset:2px}
@@ -76,8 +76,8 @@ header.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg
 /* Carte signature */
 .hero{background:var(--hero-grad);color:var(--hero-ink);border-radius:28px;padding:22px 22px 18px;display:flex;flex-direction:column;gap:18px;position:relative;overflow:hidden}
 .hero::after{content:"";position:absolute;right:-60px;top:-70px;width:200px;height:200px;border-radius:50%;border:28px solid var(--hero-soft);pointer-events:none}
-.hero .lab{font-size:.9rem;font-weight:600;opacity:.9}
-.hero .big{font-family:var(--display);font-weight:700;font-size:clamp(2.2rem,11vw,3.1rem);line-height:1;letter-spacing:-.03em;margin-top:6px}
+.hero .lab{font-family:var(--display);font-style:italic;font-size:1.05rem;font-weight:500;opacity:.95}
+.hero .big{font-family:var(--display);font-weight:700;font-size:clamp(2.2rem,11vw,3.1rem);line-height:1;letter-spacing:-.015em;margin-top:6px}
 .hero .big small{font-size:.5em;font-weight:500;opacity:.85;margin-left:2px}
 .hero .meter{height:8px;border-radius:99px;background:var(--hero-soft);overflow:hidden}
 .hero .meter i{display:block;height:100%;background:var(--hero-ink);border-radius:99px}
@@ -156,7 +156,7 @@ header.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg
 .goal .need{font-size:.85rem;font-weight:700;color:var(--ink)}
 .goal.done .need{color:var(--ok)}
 .tot-card{background:var(--surface);box-shadow:var(--shadow);border-radius:28px;padding:20px;display:flex;flex-direction:column;gap:6px}
-.tot-card .big{font-family:var(--display);font-weight:700;font-size:clamp(2rem,10vw,2.6rem);letter-spacing:-.03em;color:var(--ok);line-height:1.05}
+.tot-card .big{font-family:var(--display);font-weight:700;font-size:clamp(2rem,10vw,2.6rem);letter-spacing:-.015em;color:var(--ok);line-height:1.05}
 .presets{display:flex;gap:8px;flex-wrap:wrap}
 .save{display:grid;grid-template-columns:64px minmax(0,1fr);gap:14px;align-items:center}
 .save .rg{width:64px;height:64px}
