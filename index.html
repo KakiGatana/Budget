@@ -20,7 +20,7 @@
 <style>
 /* Layout : appli mobile en une colonne, alignée à gauche. Une carte corail signature pour le reste à vivre, le reste calme ; barre de navigation flottante prune avec le + au centre. */
 :root{
-  --bg:#FCEEF3; --surface:#FFFFFF; --sunk:#F8E3EB; --ink:#2A1A27; --muted:#7D6577; --line:#F1D8E2; --pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cg fill='%23D9578A' opacity='.32'%3E%3Cg transform='translate(22 18) rotate(-8)'%3E%3Ccircle cx='20' cy='15' r='9'/%3E%3Cpath d='M11.5 11 13 0l7 7.5zM28.5 11 27 0l-7 7.5z'/%3E%3Cellipse cx='20' cy='35' rx='12.5' ry='13'/%3E%3Cpath d='M31 44c9 1 11-6 7-12' fill='none' stroke='%23D9578A' stroke-width='3.2' stroke-linecap='round'/%3E%3C/g%3E%3Cg transform='translate(92 104)'%3E%3Cellipse cx='24' cy='16' rx='20' ry='9'/%3E%3Ccircle cx='44' cy='9' r='7.5'/%3E%3Cpath d='M38.5 5 39 -3.5l5 5zM50 5 51 -3.5l-5.5 4.5z'/%3E%3Cpath d='M5 16C-3 14-3 4 4 3' fill='none' stroke='%23D9578A' stroke-width='3' stroke-linecap='round'/%3E%3C/g%3E%3Cg transform='translate(118 30)'%3E%3Cellipse cx='6' cy='9' rx='4' ry='3.4'/%3E%3Ccircle cx='1.5' cy='3.5' r='1.7'/%3E%3Ccircle cx='6' cy='1.6' r='1.7'/%3E%3Ccircle cx='10.5' cy='3.5' r='1.7'/%3E%3C/g%3E%3Cg transform='translate(30 120) rotate(-20)'%3E%3Cellipse cx='6' cy='9' rx='4' ry='3.4'/%3E%3Ccircle cx='1.5' cy='3.5' r='1.7'/%3E%3Ccircle cx='6' cy='1.6' r='1.7'/%3E%3Ccircle cx='10.5' cy='3.5' r='1.7'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  --bg:#FCEEF3; --surface:#FFFFFF; --sunk:#F8E3EB; --ink:#2A1A27; --muted:#7D6577; --line:#F1D8E2; --dot:#F3B9CE;
   --hero:#FF5B3A; --hero-ink:#FFFFFF; --hero-soft:rgba(255,255,255,.22);
   --nav:#241C38; --nav-ink:#B9B1CC; --nav-on:#FFFFFF;
   --ok:#1E9E6A; --warn:#D98200; --bad:#E0392B; --bad-soft:#FDE8E5; --warn-soft:#FFF2DC;
@@ -31,7 +31,7 @@
   --body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#1B1218; --surface:#271B23; --sunk:#34242E; --ink:#F8EEF3; --muted:#B79DAD; --line:#3B2A35; --pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cg fill='%23C24D7C' opacity='.32'%3E%3Cg transform='translate(22 18) rotate(-8)'%3E%3Ccircle cx='20' cy='15' r='9'/%3E%3Cpath d='M11.5 11 13 0l7 7.5zM28.5 11 27 0l-7 7.5z'/%3E%3Cellipse cx='20' cy='35' rx='12.5' ry='13'/%3E%3Cpath d='M31 44c9 1 11-6 7-12' fill='none' stroke='%23C24D7C' stroke-width='3.2' stroke-linecap='round'/%3E%3C/g%3E%3Cg transform='translate(92 104)'%3E%3Cellipse cx='24' cy='16' rx='20' ry='9'/%3E%3Ccircle cx='44' cy='9' r='7.5'/%3E%3Cpath d='M38.5 5 39 -3.5l5 5zM50 5 51 -3.5l-5.5 4.5z'/%3E%3Cpath d='M5 16C-3 14-3 4 4 3' fill='none' stroke='%23C24D7C' stroke-width='3' stroke-linecap='round'/%3E%3C/g%3E%3Cg transform='translate(118 30)'%3E%3Cellipse cx='6' cy='9' rx='4' ry='3.4'/%3E%3Ccircle cx='1.5' cy='3.5' r='1.7'/%3E%3Ccircle cx='6' cy='1.6' r='1.7'/%3E%3Ccircle cx='10.5' cy='3.5' r='1.7'/%3E%3C/g%3E%3Cg transform='translate(30 120) rotate(-20)'%3E%3Cellipse cx='6' cy='9' rx='4' ry='3.4'/%3E%3Ccircle cx='1.5' cy='3.5' r='1.7'/%3E%3Ccircle cx='6' cy='1.6' r='1.7'/%3E%3Ccircle cx='10.5' cy='3.5' r='1.7'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  --bg:#1B1218; --surface:#271B23; --sunk:#34242E; --ink:#F8EEF3; --muted:#B79DAD; --line:#3B2A35; --dot:#4C2A3D;
   --hero:#FF6447; --hero-ink:#FFFFFF; --hero-soft:rgba(255,255,255,.2);
   --nav:#2A2340; --nav-ink:#9D94B5; --nav-on:#FFFFFF;
   --ok:#3BC98C; --warn:#F5A623; --bad:#FF6B5C; --bad-soft:#3B1D1F; --warn-soft:#3A2C14;
@@ -40,7 +40,7 @@
   --e1:#4A2A22; --e2:#2F2752; --e3:#1C3F3B; --e4:#463717; --e5:#4A2236; --e6:#1F3150;
   color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#1B1218; --surface:#271B23; --sunk:#34242E; --ink:#F8EEF3; --muted:#B79DAD; --line:#3B2A35; --pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cg fill='%23C24D7C' opacity='.32'%3E%3Cg transform='translate(22 18) rotate(-8)'%3E%3Ccircle cx='20' cy='15' r='9'/%3E%3Cpath d='M11.5 11 13 0l7 7.5zM28.5 11 27 0l-7 7.5z'/%3E%3Cellipse cx='20' cy='35' rx='12.5' ry='13'/%3E%3Cpath d='M31 44c9 1 11-6 7-12' fill='none' stroke='%23C24D7C' stroke-width='3.2' stroke-linecap='round'/%3E%3C/g%3E%3Cg transform='translate(92 104)'%3E%3Cellipse cx='24' cy='16' rx='20' ry='9'/%3E%3Ccircle cx='44' cy='9' r='7.5'/%3E%3Cpath d='M38.5 5 39 -3.5l5 5zM50 5 51 -3.5l-5.5 4.5z'/%3E%3Cpath d='M5 16C-3 14-3 4 4 3' fill='none' stroke='%23C24D7C' stroke-width='3' stroke-linecap='round'/%3E%3C/g%3E%3Cg transform='translate(118 30)'%3E%3Cellipse cx='6' cy='9' rx='4' ry='3.4'/%3E%3Ccircle cx='1.5' cy='3.5' r='1.7'/%3E%3Ccircle cx='6' cy='1.6' r='1.7'/%3E%3Ccircle cx='10.5' cy='3.5' r='1.7'/%3E%3C/g%3E%3Cg transform='translate(30 120) rotate(-20)'%3E%3Cellipse cx='6' cy='9' rx='4' ry='3.4'/%3E%3Ccircle cx='1.5' cy='3.5' r='1.7'/%3E%3Ccircle cx='6' cy='1.6' r='1.7'/%3E%3Ccircle cx='10.5' cy='3.5' r='1.7'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  --bg:#1B1218; --surface:#271B23; --sunk:#34242E; --ink:#F8EEF3; --muted:#B79DAD; --line:#3B2A35; --dot:#4C2A3D;
   --hero:#FF6447; --hero-ink:#FFFFFF; --hero-soft:rgba(255,255,255,.2);
   --nav:#2A2340; --nav-ink:#9D94B5; --nav-on:#FFFFFF;
   --ok:#3BC98C; --warn:#F5A623; --bad:#FF6B5C; --bad-soft:#3B1D1F; --warn-soft:#3A2C14;
@@ -50,7 +50,7 @@
   color-scheme:dark}
 
 *{box-sizing:border-box}
-body{background:var(--bg) var(--pattern) repeat;background-size:180px 180px;color:var(--ink);font:15px/1.5 var(--body);font-variant-numeric:tabular-nums;padding-inline:16px;padding-block:0 120px;-webkit-font-smoothing:antialiased}
+body{background-color:var(--bg);background-image:radial-gradient(var(--dot) 3.5px,transparent 4px),radial-gradient(var(--dot) 3.5px,transparent 4px);background-size:30px 30px;background-position:0 0,15px 15px;color:var(--ink);font:15px/1.5 var(--body);font-variant-numeric:tabular-nums;padding-inline:16px;padding-block:0 120px;-webkit-font-smoothing:antialiased}
 .wrap{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
 h1,h2{margin:0;text-wrap:balance}
 h2{font-size:1.08rem;font-weight:800;letter-spacing:-.01em}
