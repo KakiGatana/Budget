@@ -25,8 +25,8 @@
   --nav:#241C38; --nav-ink:#B9B1CC; --nav-on:#FFFFFF;
   --ok:#1E9E6A; --warn:#D98200; --bad:#E0392B; --bad-soft:#FDE8E5; --warn-soft:#FFF2DC;
   --shadow:0 1px 2px rgba(31,26,46,.04),0 8px 24px rgba(31,26,46,.06);
-  --c1:#FF5B3A; --c2:#6C4CF1; --c3:#1FB5A3; --c4:#F5A623; --c5:#E64C8C; --c6:#3A8DFF; --c7:#8BC34A; --c8:#A35CD6; --c9:#FF8A65; --c10:#5E6B8C; --c11:#B4ADC4;
-  --e1:#FFE1D8; --e2:#E4DDFF; --e3:#D3F3EE; --e4:#FFEDCC; --e5:#FCDCEA; --e6:#DAE9FF;
+  --c1:#FF5B3A; --c2:#6C4CF1; --c3:#1FB5A3; --c4:#F5A623; --c5:#E64C8C; --c6:#3A8DFF; --c7:#8BC34A; --c8:#A35CD6; --c9:#FF8A65; --c10:#5E6B8C; --c11:#B4ADC4; --c12:#C2185B; --c13:#B8960B; --c14:#0E8F6E; --c15:#7A4B2A;
+  --e1:#FFE1D8; --e2:#E4DDFF; --e3:#D3F3EE; --e4:#FFEDCC; --e5:#FCDCEA; --e6:#DAE9FF; --e7:#E5F4D2; --e8:#F0DFFA; --e9:#FFE6DC; --e10:#E1E5EF; --e11:#F9D3E1; --e12:#FBF1C4; --e13:#CDEFE4; --e14:#EFE2D6; --e15:#F4F4F6;
   --display:"Unbounded","Arial Black",system-ui,sans-serif;
   --body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
 }
@@ -36,8 +36,8 @@
   --nav:#2A2340; --nav-ink:#9D94B5; --nav-on:#FFFFFF;
   --ok:#3BC98C; --warn:#F5A623; --bad:#FF6B5C; --bad-soft:#3B1D1F; --warn-soft:#3A2C14;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
-  --c1:#FF7A5C; --c2:#9580FF; --c3:#3FD1BE; --c4:#FFBE4D; --c5:#FF73AA; --c6:#66A8FF; --c7:#A5D66A; --c8:#C08AF0; --c9:#FFA587; --c10:#8E9AB8; --c11:#7E778F;
-  --e1:#4A2A22; --e2:#2F2752; --e3:#1C3F3B; --e4:#463717; --e5:#4A2236; --e6:#1F3150;
+  --c1:#FF7A5C; --c2:#9580FF; --c3:#3FD1BE; --c4:#FFBE4D; --c5:#FF73AA; --c6:#66A8FF; --c7:#A5D66A; --c8:#C08AF0; --c9:#FFA587; --c10:#8E9AB8; --c11:#7E778F; --c12:#F06292; --c13:#E8C84A; --c14:#3FC79F; --c15:#C9956B;
+  --e1:#4A2A22; --e2:#2F2752; --e3:#1C3F3B; --e4:#463717; --e5:#4A2236; --e6:#1F3150; --e7:#2C3D1E; --e8:#3A2650; --e9:#4A2C22; --e10:#2A2F3D; --e11:#4D1D30; --e12:#453C15; --e13:#173D33; --e14:#3E2D20; --e15:#33303A;
   color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#1B1218; --surface:#271B23; --sunk:#34242E; --ink:#F8EEF3; --muted:#B79DAD; --line:#3B2A35; --dot:#4C2A3D;
@@ -45,8 +45,8 @@
   --nav:#2A2340; --nav-ink:#9D94B5; --nav-on:#FFFFFF;
   --ok:#3BC98C; --warn:#F5A623; --bad:#FF6B5C; --bad-soft:#3B1D1F; --warn-soft:#3A2C14;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
-  --c1:#FF7A5C; --c2:#9580FF; --c3:#3FD1BE; --c4:#FFBE4D; --c5:#FF73AA; --c6:#66A8FF; --c7:#A5D66A; --c8:#C08AF0; --c9:#FFA587; --c10:#8E9AB8; --c11:#7E778F;
-  --e1:#4A2A22; --e2:#2F2752; --e3:#1C3F3B; --e4:#463717; --e5:#4A2236; --e6:#1F3150;
+  --c1:#FF7A5C; --c2:#9580FF; --c3:#3FD1BE; --c4:#FFBE4D; --c5:#FF73AA; --c6:#66A8FF; --c7:#A5D66A; --c8:#C08AF0; --c9:#FFA587; --c10:#8E9AB8; --c11:#7E778F; --c12:#F06292; --c13:#E8C84A; --c14:#3FC79F; --c15:#C9956B;
+  --e1:#4A2A22; --e2:#2F2752; --e3:#1C3F3B; --e4:#463717; --e5:#4A2236; --e6:#1F3150; --e7:#2C3D1E; --e8:#3A2650; --e9:#4A2C22; --e10:#2A2F3D; --e11:#4D1D30; --e12:#453C15; --e13:#173D33; --e14:#3E2D20; --e15:#33303A;
   color-scheme:dark}
 
 *{box-sizing:border-box}
@@ -214,7 +214,7 @@ header.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg
 .btn-row{display:flex;gap:8px;flex-wrap:wrap}
 .btn-row .btn{flex:1}
 .swatches{display:flex;gap:10px;flex-wrap:wrap}
-.swatches button{width:36px;height:36px;border-radius:50%;border:3px solid transparent}
+.swatches{display:grid!important;grid-template-columns:repeat(8,1fr);gap:8px}.swatches button{width:100%;aspect-ratio:1;height:auto;max-width:40px;border-radius:50%;border:3px solid transparent}
 .swatches button[aria-pressed="true"]{border-color:var(--ink)}
 .catgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
 .catgrid button{border:1.5px solid transparent;background:var(--bg);border-radius:14px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.7rem;font-weight:700;min-width:0}
@@ -243,6 +243,9 @@ nav.tabs .t[aria-current="page"]{color:var(--nav-on)}
 .seg.pay button{flex:1;padding:10px}
 .seg.pay button[data-v="tr"][aria-pressed="true"]{background:var(--c4);color:#1F1A2E}
 .err{color:var(--bad);font-weight:700;font-size:.88rem;margin:0}
+.rows li,.env,.acc,.goal{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;transition:transform .45s ease,opacity .45s ease}
+.pressing{transform:scale(.96);opacity:.75}
+.confirm .who{font-weight:800}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(96px + env(safe-area-inset-bottom,0px));z-index:30;background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:16px;display:flex;gap:14px;align-items:center;font-size:.9rem;font-weight:600;max-width:calc(100% - 32px)}
 .toast button{border:0;background:none;color:var(--hero);font-weight:800}
 .status{font-size:.78rem;color:var(--muted);text-align:center;margin:18px 0 0}
@@ -305,7 +308,7 @@ const catById=id=>CATS.find(c=>c.id===id)||CATS[CATS.length-1];
 const INC=[{id:'prime',name:'Prime',c:'--c4',i:'loisirs'},{id:'vinted',name:'Vinted',c:'--c3',i:'shopping'},{id:'devoirs',name:'Aide aux devoirs',c:'--c2',i:'devoirs'},{id:'courses',name:'Courses rendues',c:'--c6',i:'courses'},{id:'rembours',name:'Rembour­sement',c:'--c8',i:'rembours'},{id:'cadeau',name:'Cadeau reçu',c:'--c5',i:'cadeaux'},{id:'autre',name:'Autre',c:'--c7',i:'extra'}];
 const incById=id=>INC.find(c=>c.id===id)||INC[INC.length-1];
 const incIcon=id=>{const c=incById(id);return `<span class="ico" style="background:color-mix(in srgb,var(${c.c}) 16%,transparent)"><svg viewBox="0 0 24 24" style="stroke:var(${c.c})">${I[c.i]}</svg></span>`};
-const ENV_COLORS=[['--e1','--c1'],['--e2','--c2'],['--e3','--c3'],['--e4','--c4'],['--e5','--c5'],['--e6','--c6']];
+const ENV_COLORS=[['--e1','--c1'],['--e2','--c2'],['--e3','--c3'],['--e4','--c4'],['--e5','--c5'],['--e6','--c6'],['--e7','--c7'],['--e8','--c8'],['--e9','--c9'],['--e10','--c10'],['--e11','--c12'],['--e12','--c13'],['--e13','--c14'],['--e14','--c15'],['--e15','--c11']];
 const MOIS=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
 const MC=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
 const JOURS=['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
@@ -578,6 +581,7 @@ function vDepenses(){
   const total=filt.reduce((a,e)=>a+num(e.amount),0);
   return `<section class="sec"><div class="sec-head"><h2>Dépenses</h2><span class="tot">${eur(total)}</span></div>
     <div class="filters" role="group" aria-label="Filtrer par semaine"><button data-week="all" aria-pressed="${weekFilter==='all'}">Tout le mois</button>${ws.map((w,i)=>`<button data-week="${i}" aria-pressed="${weekFilter===String(i)}">Du ${w.start} au ${w.end}</button>`).join('')}</div>
+    <p class="hint">Touche une dépense pour la modifier, appui long pour la supprimer.</p>
     ${catFilter?`<button class="catchip" id="clearCat">${esc(catById(catFilter).name)} <span aria-label="Retirer le filtre">×</span></button>`:''}
     ${body||`<div class="empty"><p class="hint">Aucune dépense${catFilter?' dans cette catégorie':''} ${weekFilter==='all'?'ce mois-ci':'cette semaine'}.</p><button class="btn" id="addExp">Ajouter une dépense</button></div>`}</section>`;
 }
@@ -586,7 +590,7 @@ function vEnveloppes(){
   const envs=settings.envelopes||[];
   const tb=envs.reduce((a,e)=>a+num(e.budget),0), ts=envs.reduce((a,e)=>a+envSpent(e.id),0);
   return `${alertsHtml()}<section class="sec"><div class="sec-head"><h2>Enveloppes</h2><span class="hint">${eurS(ts)} sur ${eurS(tb)}</span></div>
-  <p class="hint">Un budget par poste et par mois. Choisis l'enveloppe quand tu notes une dépense.</p>
+  <p class="hint">Un budget par poste et par mois. Choisis l'enveloppe quand tu notes une dépense. Appui long sur une enveloppe pour la supprimer.</p>
   <div class="envs">${envs.map(envCard).join('')}<button class="env env-add" id="addEnv">+ Nouvelle enveloppe</button></div></section>`;
 }
 
@@ -801,6 +805,51 @@ function goalSheet(existing){
     },
     onDelete:existing?()=>{settings.goals=list.filter(x=>x.id!==g.id);saveSettings();render();toast('Objectif supprimé.')}:null});
 }
+const LP_SEL='[data-exp],[data-extra],[data-save],[data-env],[data-acc],[data-goal],[data-fixed]';
+function settingsRemove(key,item,msg){
+  const before=[...(settings[key]||[])];
+  settings[key]=before.filter(x=>x.id!==item.id);saveSettings();render();
+  toast(msg,()=>{settings[key]=before;saveSettings();render()});
+}
+function deletionFor(el){
+  const d=el.dataset;
+  if(d.exp){const x=(month.expenses||[]).find(i=>i.id===d.exp);return x&&{name:x.label||catById(x.cat).name,sub:eur(x.amount),go:()=>removeWithUndo('expenses',x)}}
+  if(d.extra){const x=(month.extras||[]).find(i=>i.id===d.extra);return x&&{name:x.label||incById(x.kind).name.replace('\u00ad',''),sub:'+'+eur(x.amount),go:()=>removeWithUndo('extras',x)}}
+  if(d.save){const x=(month.savings||[]).find(i=>i.id===d.save);return x&&{name:x.label||(x.dir==='out'?'Retrait':'Versement'),sub:eur(x.amount),go:()=>removeWithUndo('savings',x)}}
+  if(d.env){const x=(settings.envelopes||[]).find(i=>i.id===d.env);return x&&{name:x.name,sub:"Les dépenses déjà notées restent, sans enveloppe.",go:()=>settingsRemove('envelopes',x,`Enveloppe « ${x.name} » supprimée.`)}}
+  if(d.acc){const x=accOf(d.acc);return x&&{name:x.name,sub:"Ses mouvements passeront en « Non classé ».",go:()=>settingsRemove('accounts',x,`${x.name} supprimé.`)}}
+  if(d.goal){const x=(settings.goals||[]).find(i=>i.id===d.goal);return x&&{name:x.name,sub:'Objectif de '+eur(x.target),go:()=>settingsRemove('goals',x,'Objectif supprimé.')}}
+  if(d.fixed){const all=normFixed(settings.fixed),f=all.find(i=>i.id===d.fixed),k=MK();return f&&{name:f.label,sub:`Arrêtée à partir de ${MOIS[cur.m]} ${cur.y}. Les mois d'avant ne changent pas.`,label:'Arrêter',go:()=>{
+    const before=JSON.parse(JSON.stringify(all));
+    if(f.from>=k)settings.fixed=all.filter(x=>x.id!==f.id);else{f.until=prevMK(k);f.hist=(f.hist||[]).filter(h=>h.from<k);settings.fixed=all}
+    saveSettings();render();toast(`« ${f.label} » arrêtée.`,()=>{settings.fixed=before;saveSettings();render()});}}}
+  return null;
+}
+function askDelete(el){
+  const del=deletionFor(el);if(!del)return;
+  closeSheet();
+  const scrim=document.createElement('div');scrim.className='scrim';
+  scrim.innerHTML=`<div class="sheet confirm" role="dialog" aria-label="Confirmer la suppression"><span class="grab"></span>
+    <h2>${del.label==='Arrêter'?'Arrêter':'Supprimer'} « <span class="who">${esc(del.name)}</span> » ?</h2><p class="hint">${esc(del.sub)}</p>
+    <div class="btn-row"><button type="button" class="btn danger" id="cDel">${del.label||'Supprimer'}</button></div>
+    <div class="btn-row"><button type="button" class="btn soft" id="cNo">Annuler</button></div></div>`;
+  document.body.appendChild(scrim);sheetEl=scrim;
+  scrim.addEventListener('click',e=>{if(e.target===scrim||e.target.id==='cNo')closeSheet();if(e.target.id==='cDel'){closeSheet();del.go()}});
+}
+const lp={t:null,el:null,x:0,y:0,fired:false};
+const lpVis=el=>el.closest('.rows li')||el;
+function lpCancel(){clearTimeout(lp.t);if(lp.el)lpVis(lp.el).classList.remove('pressing');lp.el=null}
+app.addEventListener('pointerdown',e=>{
+  const li=e.target.closest('.rows li');
+  const el=e.target.closest(LP_SEL)||(li&&li.querySelector(LP_SEL));if(!el)return;
+  lpCancel();lp.el=el;lp.x=e.clientX;lp.y=e.clientY;lp.fired=false;lpVis(el).classList.add('pressing');
+  lp.t=setTimeout(()=>{lp.fired=true;lpVis(el).classList.remove('pressing');try{navigator.vibrate&&navigator.vibrate(15)}catch(x){}askDelete(el);lp.el=null},550);
+});
+app.addEventListener('pointermove',e=>{if(lp.el&&Math.hypot(e.clientX-lp.x,e.clientY-lp.y)>10)lpCancel()});
+['pointerup','pointercancel','pointerleave'].forEach(t=>app.addEventListener(t,lpCancel));
+window.addEventListener('scroll',lpCancel,{passive:true});
+app.addEventListener('contextmenu',e=>{if(e.target.closest(LP_SEL)||e.target.closest('.rows li'))e.preventDefault()});
+app.addEventListener('click',e=>{if(lp.fired){lp.fired=false;e.preventDefault();e.stopPropagation()}},true);
 function removeWithUndo(field,item){
   month[field]=(month[field]||[]).filter(x=>x.id!==item.id);saveMonth();render();
   toast('Supprimé.',()=>{month[field]=(month[field]||[]).concat(item);saveMonth();render()});
