@@ -1,5 +1,5 @@
 // Garde l'appli disponible hors connexion. Change VERSION à chaque mise à jour.
-const VERSION = 'budget-v8';
+const VERSION = 'budget-v9';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png'];
 
 self.addEventListener('install', e => {

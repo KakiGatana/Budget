@@ -16,7 +16,7 @@
 <title>PollyPocket</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..800;1,9..144,500..700&family=Nunito:wght@400..800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap">
 <style>
 /* Layout : appli mobile en une colonne, alignée à gauche. Une carte corail signature pour le reste à vivre, le reste calme ; barre de navigation flottante prune avec le + au centre. */
 :root{
@@ -28,7 +28,7 @@
   --c1:#FF5B3A; --c2:#6C4CF1; --c3:#1FB5A3; --c4:#F5A623; --c5:#E64C8C; --c6:#3A8DFF; --c7:#8BC34A; --c8:#A35CD6; --c9:#FF8A65; --c10:#5E6B8C; --c11:#B4ADC4; --c12:#C2185B; --c13:#B8960B; --c14:#0E8F6E; --c15:#7A4B2A;
   --e1:#FFE1D8; --e2:#E4DDFF; --e3:#D3F3EE; --e4:#FFEDCC; --e5:#FCDCEA; --e6:#DAE9FF; --e7:#E5F4D2; --e8:#F0DFFA; --e9:#FFE6DC; --e10:#E1E5EF; --e11:#F9D3E1; --e12:#FBF1C4; --e13:#CDEFE4; --e14:#EFE2D6; --e15:#F4F4F6;
   --display:"Fraunces","Iowan Old Style","Palatino Linotype",Georgia,serif;
-  --body:"Nunito","Avenir Next",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --body:"Fraunces","Iowan Old Style","Palatino Linotype",Georgia,serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#1B1218; --surface:#271B23; --sunk:#34242E; --ink:#F8EEF3; --muted:#B79DAD; --line:#3B2A35; --dot:#4C2A3D;
@@ -50,8 +50,19 @@
   color-scheme:dark}
 
 *{box-sizing:border-box}
-body{background-color:var(--bg);background-image:radial-gradient(var(--dot) 3.5px,transparent 4px),radial-gradient(var(--dot) 3.5px,transparent 4px);background-size:30px 30px;background-position:0 0,15px 15px;color:var(--ink);font:15px/1.5 var(--body);font-variant-numeric:tabular-nums;padding-inline:16px;padding-block:0 120px;-webkit-font-smoothing:antialiased}
+body{min-height:100vh;background-color:var(--bg);background-image:var(--pat);background-size:var(--pat-size);background-position:var(--pat-pos);color:var(--ink);font:15px/1.5 var(--body);font-variant-numeric:tabular-nums;padding-inline:16px;padding-block:0 120px;-webkit-font-smoothing:antialiased}
 .wrap{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+body{--pat:radial-gradient(var(--dot) 3.5px,transparent 4px),radial-gradient(var(--dot) 3.5px,transparent 4px);--pat-size:30px 30px;--pat-pos:0 0,15px 15px}
+body[data-tab="depenses"]{--bg:#FFF9DF;--sunk:#FBF0C8;--line:#F1E4B3;--pat:repeating-linear-gradient(90deg,#FBEDAA 0 10px,transparent 10px 26px);--pat-size:auto;--pat-pos:0 0}
+body[data-tab="epargne"]{--bg:#EAF7EC;--sunk:#DCF0E0;--line:#CDE7D3;--pat:radial-gradient(circle,transparent 7px,#BFE5C8 7.5px 9px,transparent 9.5px),radial-gradient(circle,#CDEBD4 3px,transparent 3.5px),radial-gradient(circle,transparent 3.5px,#C6E8CE 4px 5px,transparent 5.5px);--pat-size:64px 64px,42px 42px,54px 54px;--pat-pos:6px 10px,27px 34px,40px 2px}
+body[data-tab="revenus"]{--bg:#E6F2FF;--sunk:#D9EAFB;--line:#C9DEF4;--pat:linear-gradient(180deg,#EAF4FF 0%,#D3E7FC 55%,#BCD9F7 100%);--pat-size:100% 100%;--pat-pos:0 0}
+@media (prefers-color-scheme: dark){
+ :root:not([data-theme="light"]) body[data-tab="depenses"]{--bg:#211E10;--sunk:#2D2915;--line:#3A3419;--pat:repeating-linear-gradient(90deg,#2C2814 0 10px,transparent 10px 26px)}
+ :root:not([data-theme="light"]) body[data-tab="epargne"]{--bg:#0F1E16;--sunk:#18301F;--line:#21402B;--pat:radial-gradient(circle,transparent 7px,#1E3A28 7.5px 9px,transparent 9.5px),radial-gradient(circle,#1B3524 3px,transparent 3.5px),radial-gradient(circle,transparent 3.5px,#1E3A28 4px 5px,transparent 5.5px)}
+ :root:not([data-theme="light"]) body[data-tab="revenus"]{--bg:#0F1A26;--sunk:#172636;--line:#203448;--pat:linear-gradient(180deg,#101C29 0%,#11243A 100%)}}
+:root[data-theme="dark"] body[data-tab="depenses"]{--bg:#211E10;--sunk:#2D2915;--line:#3A3419;--pat:repeating-linear-gradient(90deg,#2C2814 0 10px,transparent 10px 26px)}
+:root[data-theme="dark"] body[data-tab="epargne"]{--bg:#0F1E16;--sunk:#18301F;--line:#21402B;--pat:radial-gradient(circle,transparent 7px,#1E3A28 7.5px 9px,transparent 9.5px),radial-gradient(circle,#1B3524 3px,transparent 3.5px),radial-gradient(circle,transparent 3.5px,#1E3A28 4px 5px,transparent 5.5px)}
+:root[data-theme="dark"] body[data-tab="revenus"]{--bg:#0F1A26;--sunk:#172636;--line:#203448;--pat:linear-gradient(180deg,#101C29 0%,#11243A 100%)}
 h1,h2{margin:0;text-wrap:balance}
 h2{font-family:var(--display);font-size:1.22rem;font-weight:700;letter-spacing:-.005em;font-variation-settings:'opsz' 36}
 button,input,select{font:inherit;color:inherit}
@@ -437,7 +448,9 @@ const longDay=d=>{const day=dayOf(d);const w=JOURS[new Date(cur.y,cur.m,day).get
 
 // ---------- rendu ----------
 const app=document.getElementById('app');
+const TAB_BG={depenses:'#FFF9DF',epargne:'#EAF7EC',revenus:'#E6F2FF'};
 function render(){
+  if(document.body.dataset.tab!==tab){document.body.dataset.tab=tab;const m=document.querySelector('meta[name="theme-color"][media*="light"]');if(m)m.setAttribute('content',TAB_BG[tab]||'#FCEEF3')}
   document.getElementById('monthLabel').innerHTML=`${MOIS[cur.m][0].toUpperCase()+MOIS[cur.m].slice(1)} <span>${cur.y}</span>`;
   document.getElementById('modePerso').setAttribute('aria-pressed',settings.mode!=='deux');
   document.getElementById('modeDeux').setAttribute('aria-pressed',settings.mode==='deux');
