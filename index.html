@@ -287,6 +287,11 @@ body.enter nav.tabs .in{animation:navIn .5s .1s cubic-bezier(.2,.9,.3,1.2) both}
 @keyframes appIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 @keyframes navIn{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){#splash{display:none}body.enter .wrap > *,body.enter nav.tabs .in{animation:none}}
+.envd-head{display:grid;grid-template-columns:72px minmax(0,1fr);gap:14px;align-items:center;border-radius:20px;padding:14px}
+.envd-head .ring{width:72px;height:72px}.envd-head .ring circle{stroke-width:6}
+.envd-head .left{font-family:var(--display);font-weight:800;font-size:1.5rem;line-height:1.1}
+.envd-head .of{font-size:.85rem;color:var(--muted);font-weight:600}
+.envd-list{max-height:42vh;overflow-y:auto;margin:0 -4px;padding:0 4px}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(96px + env(safe-area-inset-bottom,0px));z-index:30;background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:16px;display:flex;gap:14px;align-items:center;font-size:.9rem;font-weight:600;max-width:calc(100% - 32px)}
 .toast button{border:0;background:none;color:#D9B8FF;font-weight:800}
 .status{font-size:.78rem;color:var(--muted);text-align:center;margin:18px 0 0}
@@ -645,7 +650,7 @@ function vEnveloppes(){
   const envs=settings.envelopes||[];
   const tb=envs.reduce((a,e)=>a+num(e.budget),0), ts=envs.reduce((a,e)=>a+envSpent(e.id),0);
   return `${alertsHtml()}<section class="sec"><div class="sec-head"><h2>Enveloppes</h2><span class="hint">${eurS(ts)} sur ${eurS(tb)}</span></div>
-  <p class="hint">Un budget par poste et par mois. Choisis l'enveloppe quand tu notes une dépense. Appui long sur une enveloppe pour la supprimer.</p>
+  <p class="hint">Un budget par poste et par mois. Choisis l'enveloppe quand tu notes une dépense. Touche une enveloppe pour voir ses dépenses, appui long pour la supprimer.</p>
   <div class="envs">${envs.map(envCard).join('')}<button class="env env-add" id="addEnv">+ Nouvelle enveloppe</button></div></section>`;
 }
 
@@ -728,8 +733,8 @@ function closeSheet(){if(sheetEl){sheetEl.remove();sheetEl=null}}
 const envOpts=()=>[{v:'',t:'Aucune'}].concat((settings.envelopes||[]).map(e=>({v:e.id,t:e.name})));
 const inMonth=d=>d&&d.startsWith(MK());
 
-function expenseSheet(existing,amt,pay){
-  const e=existing||{date:defaultDate(),cat:pay==='tr'?'resto':'courses',env:'',amount:amt||'',pay:pay||'compte'};
+function expenseSheet(existing,amt,pay,envId){
+  const e=existing||{date:defaultDate(),cat:pay==='tr'?'resto':'courses',env:envId||'',amount:amt||'',pay:pay||'compte'};
   const payField=[{id:'pay',label:'Payé avec',type:'seg',options:[{v:'compte',t:'Mon compte'},{v:'tr',t:'Ticket resto'}],value:isTR(e)?'tr':'compte'}];
   openSheet({kind:existing?null:'exp',title:existing?'Modifier la dépense':'Nouvelle dépense',fields:[
     {id:'amount',label:'Montant',type:'amount',value:e.amount??'',ph:'0,00 €',big:true},
@@ -763,6 +768,34 @@ function extraSheet(existing,amt){
       if(!existing)toast(`+${eur(amount)} ajoutés aux revenus.`);
     },
     onDelete:existing?()=>removeWithUndo('extras',existing):null});
+}
+function envDetail(id){
+  const e=(settings.envelopes||[]).find(x=>x.id===id);if(!e)return;
+  closeSheet();
+  const i=(settings.envelopes||[]).indexOf(e);
+  const [bg,fg]=ENV_COLORS[(e.color??i??0)%ENV_COLORS.length];
+  const list=(month.expenses||[]).filter(x=>x.env===id).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+  const sp=list.reduce((a,x)=>a+num(x.amount),0), b=num(e.budget), r=b>0?sp/b:0;
+  const R=30,C=2*Math.PI*R, stroke=r>1?'var(--bad)':r>=.85?'var(--warn)':`var(${fg})`;
+  const scrim=document.createElement('div');scrim.className='scrim';
+  scrim.innerHTML=`<div class="sheet" role="dialog" aria-label="Enveloppe ${esc(e.name)}"><span class="grab"></span>
+    <h2>${esc(e.name)}</h2>
+    <div class="envd-head" style="background:var(${bg})">
+      <svg class="ring" viewBox="0 0 72 72"><circle class="tr" cx="36" cy="36" r="${R}" fill="none"/><circle cx="36" cy="36" r="${R}" fill="none" stroke="${stroke}" stroke-linecap="round" stroke-dasharray="${Math.min(1,r)*C} ${C}" transform="rotate(-90 36 36)"/></svg>
+      <div><div class="left">${b-sp>=0?eur(b-sp):'−'+eur(sp-b)}</div><div class="of">${b-sp>=0?'restant':'de dépassement'} · ${eur(sp)} dépensés sur ${eur(b)} en ${MOIS[cur.m]}</div></div>
+    </div>
+    ${list.length?`<div class="envd-list"><ul class="rows">${list.map(x=>`<li>${icon(x.cat)}<button type="button" class="main" data-envexp="${esc(x.id)}"><span class="lbl">${esc(x.label||catById(x.cat).name)}</span><span class="sub"><span>${shortDate(x.date)}</span><span>${esc(catById(x.cat).name)}</span>${isTR(x)?'<span class="chip-tr">Ticket resto</span>':''}</span></button><span class="amt">−${eur(x.amount)}</span></li>`).join('')}</ul></div>`
+      :`<p class="hint">Aucune dépense dans cette enveloppe en ${MOIS[cur.m]}.</p>`}
+    <div class="btn-row"><button type="button" class="btn" id="edAdd">Ajouter une dépense ici</button></div>
+    <div class="btn-row"><button type="button" class="btn soft" id="edEdit">Modifier l'enveloppe</button><button type="button" class="btn soft" id="edClose">Fermer</button></div></div>`;
+  document.body.appendChild(scrim);sheetEl=scrim;
+  scrim.addEventListener('click',ev=>{
+    if(ev.target===scrim||ev.target.id==='edClose'){closeSheet();return}
+    if(ev.target.id==='edAdd'){expenseSheet(null,'',null,id);return}
+    if(ev.target.id==='edEdit'){envSheet(e);return}
+    const row=ev.target.closest('[data-envexp]');
+    if(row){expenseSheet((month.expenses||[]).find(x=>x.id===row.dataset.envexp));}
+  });
 }
 function envSheet(existing){
   const list=settings.envelopes||[];
@@ -943,7 +976,7 @@ app.addEventListener('click',e=>{
   if(el.id==='addAcc'){accSheet(null,'autre');return}
   if(el.id==='addGoal'){goalSheet(null);return}
   if(el.id==='addTR'){expenseSheet(null,'','tr');return}
-  if(el.dataset.env){envSheet((settings.envelopes||[]).find(x=>x.id===el.dataset.env));return}
+  if(el.dataset.env){envDetail(el.dataset.env);return}
   if(el.dataset.exp){expenseSheet((month.expenses||[]).find(x=>x.id===el.dataset.exp));return}
   if(el.dataset.extra){extraSheet((month.extras||[]).find(x=>x.id===el.dataset.extra));return}
   if(el.dataset.fixed){fixedSheet({id:el.dataset.fixed});return}
