@@ -308,6 +308,26 @@ body.enter nav.tabs .in{animation:navIn .5s .1s cubic-bezier(.2,.9,.3,1.2) both}
 .tips li{display:grid;grid-template-columns:26px minmax(0,1fr);gap:10px;font-size:.9rem;line-height:1.4}
 .tips li i{font-style:normal;width:26px;height:26px;border-radius:50%;background:var(--hero-grad);color:#fff;display:grid;place-items:center;font-size:.8rem;font-weight:800}
 .tips li .btn{margin-top:6px;padding:8px 12px;font-size:.85rem}
+.flag.x{color:var(--c2)}
+.linkrow{border:0;background:var(--surface);border-radius:12px;padding:10px 12px;text-align:left;width:100%}
+.bl-hero{border-radius:22px;padding:18px;color:#fff;background:var(--hero-grad);display:flex;flex-direction:column;gap:6px}
+.bl-hero.mid{background:linear-gradient(135deg,#F5B86A,#E98A6B)}
+.bl-hero.low{background:linear-gradient(135deg,#E9799F,#C2185B)}
+.bl-hero .v{font-family:var(--display);font-weight:800;font-size:1.4rem}
+.bl-hero p{margin:0;font-size:.92rem;opacity:.95}
+.bl-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.bl-grid div{background:var(--surface);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column}
+.bl-grid span{font-size:.78rem;color:var(--muted);font-weight:600}
+.bl-grid b{font-size:1.05rem}
+.pill{display:inline-block;font-size:.74rem;font-weight:800;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.pill.ok{background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}
+.pill.w{background:color-mix(in srgb,var(--warn) 20%,transparent);color:var(--warn)}
+.pill.bad{background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad)}
+.pill.x{background:color-mix(in srgb,var(--c2) 16%,transparent);color:var(--c2)}
+.bl-env{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;align-items:center;padding:8px 0;border-top:1px dashed var(--line);font-size:.9rem}
+.bl-env:first-of-type{border-top:0}
+.bl-env small{grid-column:1/-1;color:var(--muted);font-size:.8rem}
+.bl-list{margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:6px;font-size:.9rem;line-height:1.4}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(96px + env(safe-area-inset-bottom,0px));z-index:30;background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:16px;display:flex;gap:14px;align-items:center;font-size:.9rem;font-weight:600;max-width:calc(100% - 32px)}
 .toast button{border:0;background:none;color:#D9B8FF;font-weight:800}
 .status{font-size:.78rem;color:var(--muted);text-align:center;margin:18px 0 0}
@@ -525,7 +545,7 @@ function render(){
 function alertsHtml(){
   const out=[], t=totals();
   if(t.income>0&&t.left<0)out.push(`<div class="alert"><span class="ic">!</span><span>${t.saved?'Dépenses et épargne dépassent':'Tes dépenses dépassent'} tes revenus de <b>${eur(-t.left)}</b> ce mois-ci.</span></div>`);
-  (settings.envelopes||[]).forEach(e=>{
+  activeEnvs().forEach(e=>{
     const sp=envSpent(e.id), b=envBudget(e);
     if(b>0&&sp>b)out.push(`<div class="alert"><span class="ic">!</span><span><b>${esc(e.name)}</b> dépassée de <b>${eur(sp-b)}</b>.</span></div>`);
     else if(b>0&&sp>=b*.85)out.push(`<div class="alert warn"><span class="ic">!</span><span><b>${esc(e.name)}</b> presque vide : plus que <b>${eur(b-sp)}</b>.</span></div>`);
@@ -540,7 +560,7 @@ function donutSvg(items,total,center,sub){
 }
 
 function vApercu(){
-  const t=totals(), cats=byCat(), envs=settings.envelopes||[];
+  const t=totals(), cats=byCat(), envs=activeEnvs();
   if(!t.income&&!t.spent&&!t.saved&&!t.trSpent&&!envs.length&&!(settings.fixed||[]).length)return `
     <div class="empty"><h2>On met ton mois en place</h2>
     <ol class="steps"><li><span>1</span><div>Entre ton salaire dans <b>Budget</b>.</div></li>
@@ -561,6 +581,7 @@ function vApercu(){
     <div class="trio"><div><span>Revenus</span><b>${eurS(t.income)}</b>${t.extras?`<span>dont +${eurS(t.extras)} en plus</span>`:''}</div><div><span>Dépensé</span><b>${eurS(t.spent)}</b><span>dont ${eurS(t.fixed)} de fixes</span></div><div><span>Épargné</span><b>${eurS(t.saved)}</b></div></div>
   </section>
   ${alertsHtml()}
+  ${bilanCard()}
   ${rebalCard(false)}
   ${macs.length?`<section class="sec"><div class="sec-head"><h2>Tes dépenses en %</h2><span class="hint">sur ${eurS(t.spent+t.trSpent)} dépensés</span></div>
     <div class="macs">${macs.map(c=>macaron(c,t.spent+t.trSpent)).join('')}</div></section>`:''}
@@ -639,6 +660,7 @@ function envCard(e,i){
     <div class="top"><span class="name">${esc(e.name)}</span>
     <svg class="ring" viewBox="0 0 34 34"><circle class="tr" cx="17" cy="17" r="${R}"/><circle cx="17" cy="17" r="${R}" stroke="${stroke}" stroke-linecap="round" stroke-dasharray="${len} ${C}" transform="rotate(-90 17 17)"/></svg></div>
     <div><div class="left">${b-sp>=0?eurS(b-sp):'−'+eurS(sp-b)}</div><div class="of">${b-sp>=0?'restant':'de dépassement'} sur ${eurS(b)}</div></div>
+    ${e.exc?`<span class="flag x">Exceptionnelle · ${esc(periodTxt(e))}</span>`:''}
     ${r>1?'<span class="flag">Dépassée</span>':r>=.85?'<span class="flag w">Presque vide</span>':''}
   </button>`;
 }
@@ -664,11 +686,12 @@ function vDepenses(){
 }
 
 function vEnveloppes(){
-  const envs=settings.envelopes||[];
+  const envs=activeEnvs(), later=(settings.envelopes||[]).filter(e=>!envActive(e));
   const tb=envs.reduce((a,e)=>a+envBudget(e),0), ts=envs.reduce((a,e)=>a+envSpent(e.id),0);
   return `${alertsHtml()}<section class="sec"><div class="sec-head"><h2>Enveloppes</h2><span class="hint">${eurS(ts)} sur ${eurS(tb)}</span></div>
   <p class="hint">Un budget par poste et par mois. Choisis l'enveloppe quand tu notes une dépense. Touche une enveloppe pour voir ses dépenses, appui long pour la supprimer.</p>
-  <div class="envs">${envs.map(envCard).join('')}<button class="env env-add" id="addEnv">+ Nouvelle enveloppe</button></div>${envPresets()}</section>
+  <div class="envs">${envs.map(envCard).join('')}<button class="env env-add" id="addEnv">+ Nouvelle enveloppe</button></div>${envPresets()}
+  ${later.length?`<div class="rb-sec"><h3>Exceptionnelles hors période</h3>${later.map(e=>`<button class="rb-line linkrow" data-envedit="${esc(e.id)}"><span>${esc(e.name)}</span><b>${esc(periodTxt(e))} · ${eurS(num(e.budget))}/mois</b></button>`).join('')}</div>`:''}</section>
   ${rebalCard(true)}`;
 }
 
@@ -722,7 +745,7 @@ function openSheet({title,fields,onSave,onDelete,deleteLabel,note,kind}){
     if(fd.type==='color')return `<div class="field"><label>${esc(fd.label)}</label><div class="swatches" data-field="${fd.id}">${ENV_COLORS.map((c,i)=>`<button type="button" data-v="${i}" aria-label="Couleur ${i+1}" aria-pressed="${i===fd.value}" style="background:var(${c[0]});box-shadow:inset 0 0 0 6px var(${c[0]}),inset 0 0 0 20px var(${c[1]})"></button>`).join('')}</div><input type="hidden" id="f_${fd.id}" value="${fd.value}"></div>`;
     if(fd.type==='seg')return `<div class="field"><label>${esc(fd.label)}</label><div class="seg pay" data-field="${fd.id}">${fd.options.map(o=>`<button type="button" data-v="${esc(o.v)}" aria-pressed="${o.v===fd.value}">${esc(o.t)}</button>`).join('')}</div><input type="hidden" id="f_${fd.id}" value="${esc(fd.value)}"></div>`;
     if(fd.type==='select')return `<div class="field"><label for="f_${fd.id}">${esc(fd.label)}</label><select id="f_${fd.id}">${fd.options.map(o=>`<option value="${esc(o.v)}" ${o.v===fd.value?'selected':''}>${esc(o.t)}</option>`).join('')}</select></div>`;
-    return `<div class="field"><label for="f_${fd.id}">${esc(fd.label)}</label><input id="f_${fd.id}" class="${fd.big?'amount-in':''}" ${fd.type==='amount'?'inputmode="decimal"':fd.type==='date'?'type="date"':''} value="${esc(fd.value??'')}" placeholder="${esc(fd.ph||'')}"></div>`;
+    return `<div class="field"><label for="f_${fd.id}">${esc(fd.label)}</label><input id="f_${fd.id}" class="${fd.big?'amount-in':''}" ${fd.type==='amount'?'inputmode="decimal"':fd.type==='date'?'type="date"':fd.type==='month'?'type="month"':''} value="${esc(fd.value??'')}" placeholder="${esc(fd.ph||'')}"></div>`;
   };
   const parts=[];for(let i=0;i<fields.length;i++){const fd=fields[i];if(fd.half&&fields[i+1]&&fields[i+1].half){parts.push(`<div class="grid2">${html(fd)}${html(fields[i+1])}</div>`);i++}else parts.push(html(fd))}
   scrim.innerHTML=`<form class="sheet" novalidate><span class="grab"></span>${kind?`<div class="seg kind" role="group" aria-label="Type"><button type="button" data-kind="exp" aria-pressed="${kind==='exp'}">Dépense</button><button type="button" data-kind="inc" aria-pressed="${kind==='inc'}">Revenu</button><button type="button" data-kind="sav" aria-pressed="${kind==='sav'}">Épargne</button></div>`:''}<h2>${esc(title)}</h2>${parts.join('')}${note?`<p class="hint">${note}</p>`:''}<p class="err" id="sheetErr" hidden></p>
@@ -748,7 +771,7 @@ function openSheet({title,fields,onSave,onDelete,deleteLabel,note,kind}){
   const first=scrim.querySelector('input:not([type=hidden]),select');if(first)setTimeout(()=>first.focus(),60);
 }
 function closeSheet(){if(sheetEl){sheetEl.remove();sheetEl=null}}
-const envOpts=()=>[{v:'',t:'Aucune'}].concat((settings.envelopes||[]).map(e=>({v:e.id,t:e.name})));
+const envOpts=()=>[{v:'',t:'Aucune'}].concat(activeEnvs().map(e=>({v:e.id,t:e.name})));
 const inMonth=d=>d&&d.startsWith(MK());
 
 function expenseSheet(existing,amt,pay,envId){
@@ -787,11 +810,81 @@ function extraSheet(existing,amt){
     },
     onDelete:existing?()=>removeWithUndo('extras',existing):null});
 }
+// ---------- bilan du mois ----------
+const realMK=()=>{const d=new Date();return `${d.getFullYear()}-${pad(d.getMonth()+1)}`};
+function monthHasData(){return (month.expenses||[]).length||(month.savings||[]).length||(month.extras||[]).length||month.salary!=null}
+function bilanCard(){
+  const k=MK(), rk=realMK(), d=new Date(), last=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();
+  if(k<rk&&monthHasData())return `<section class="rb-card"><div class="sec-head"><h2>Bilan de ${MOIS[cur.m]}</h2></div><p class="hint">Le mois est terminé : regarde ce qui a bien marché et quoi ajuster.</p><button class="btn rb-btn" id="openBilan">Voir le bilan</button></section>`;
+  if(k===rk&&d.getDate()>=last-3&&monthHasData())return `<section class="rb-card"><div class="sec-head"><h2>Bilan de ${MOIS[cur.m]}</h2></div><p class="hint">La fin du mois approche : voici où tu en es avec tes enveloppes.</p><button class="btn rb-btn" id="openBilan">Voir le bilan</button></section>`;
+  if(k===rk&&d.getDate()<=7){const pm=(cur.m+11)%12;return `<section class="rb-card"><div class="sec-head"><h2>Bilan de ${MOIS[pm]}</h2></div><p class="hint">Ton bilan du mois dernier est prêt.</p><button class="btn rb-btn" id="prevBilan">Voir le bilan de ${MOIS[pm]}</button></section>`}
+  return '';
+}
+function bilanSheet(){
+  closeSheet();
+  const t=totals(), envs=activeEnvs(), reg=envs.filter(e=>!e.exc), exc=envs.filter(e=>e.exc);
+  const rows=reg.map(e=>{const sp=envSpent(e.id),b=envBudget(e);return {e,sp,b,r:b>0?sp/b:0}});
+  const ok=rows.filter(x=>x.b>0&&x.sp<=x.b), over=rows.filter(x=>x.sp>x.b+0.004), under=rows.filter(x=>x.b>0&&x.r<0.5&&!isImprevu(x.e));
+  const excIds=exc.map(e=>e.id);
+  const excSpent=(month.expenses||[]).filter(x=>excIds.includes(x.env)).reduce((a,x)=>a+num(x.amount),0);
+  const excCompte=(month.expenses||[]).filter(x=>excIds.includes(x.env)&&!isTR(x)).reduce((a,x)=>a+num(x.amount),0);
+  const leftHors=t.left+excCompte;
+  const ratio=rows.length?ok.length/rows.length:1;
+  const lvl=leftHors<0||ratio<0.5?'low':(over.length||ratio<1)?'mid':'top';
+  const verdict={top:'Mois très bien géré',mid:'Bien géré, quelques écarts',low:'Mois compliqué, on ajuste'}[lvl];
+  const sentence=lvl==='top'?`Toutes tes enveloppes ont tenu${leftHors>0?` et il te reste ${eur(leftHors)}`:''}.`
+    :lvl==='mid'?`${ok.length} enveloppe${ok.length>1?'s':''} sur ${rows.length} respectée${ok.length>1?'s':''}. Les écarts sont faciles à rattraper.`
+    :leftHors<0?`Tes dépenses courantes ont dépassé tes revenus de ${eur(-leftHors)}. Pas de panique, voici quoi ajuster.`:`Plusieurs enveloppes ont débordé. Voici quoi ajuster pour le mois prochain.`;
+  const good=[], watch=[], next=[];
+  if(ok.length)good.push(`${ok.length} enveloppe${ok.length>1?'s':''} respectée${ok.length>1?'s':''}${ok.length<=3?` : ${ok.map(x=>esc(x.e.name)).join(', ')}`:''}.`);
+  if(leftHors>0)good.push(`Reste à vivre positif : ${eur(leftHors)}${excCompte?' hors dépenses exceptionnelles':''}.`);
+  const goal=num(settings.savingsGoal);
+  if(t.saved>0)good.push(`${eur(t.saved)} mis de côté${goal>0&&t.saved>=goal?', objectif atteint':''}.`);
+  if(t.extras>0)good.push(`${eur(t.extras)} de revenus en plus.`);
+  const imp=envs.find(isImprevu);
+  if(imp&&envSpent(imp.id)===0)good.push(`Aucun imprévu ce mois-ci : l'enveloppe Imprévus est restée intacte.`);
+  over.forEach(x=>watch.push(`<b>${esc(x.e.name)}</b> dépassée de ${eur(x.sp-x.b)} (${Math.round(x.r*100)} % du budget).`));
+  if(imp&&envSpent(imp.id)>0)watch.push(`${eur(envSpent(imp.id))} d'imprévus ce mois-ci.`);
+  const exIds=new Set(excIds);const cm={};(month.expenses||[]).filter(x=>!exIds.has(x.env)).forEach(x=>cm[x.cat]=(cm[x.cat]||0)+num(x.amount));
+  const top=Object.entries(cm).sort((a,b)=>b[1]-a[1])[0];
+  if(top&&t.income>0)watch.push(`Plus gros poste hors charges fixes : ${esc(catById(top[0]).name)}, ${eur(top[1])} (${Math.round(top[1]/t.income*100)} % de tes revenus).`);
+  if(leftHors<0)watch.push(`Dépenses courantes au-dessus des revenus de ${eur(-leftHors)}.`);
+  over.forEach(x=>next.push(`<b>${esc(x.e.name)}</b> : passe son budget à environ ${eurS(Math.ceil(x.sp/5)*5)}, ou garde ${eurS(x.b)} en limitant les sorties dans ce poste.`));
+  under.forEach(x=>next.push(`<b>${esc(x.e.name)}</b> n'a utilisé que ${Math.round(x.r*100)} % : tu peux baisser son budget à ${eurS(Math.max(5,Math.ceil(x.sp*1.2/5)*5))} et verser la différence en épargne.`));
+  if(goal>0&&t.saved<goal)next.push(`Objectif d'épargne pas atteint (${eurS(t.saved)} sur ${eurS(goal)}) : fais le versement dès que le salaire tombe.`);
+  if(!imp)next.push(`Crée une enveloppe Imprévus (≈ ${eurS(suggestImprevu())}) pour absorber les surprises sans casser les autres.`);
+  const nk=(()=>{let y=cur.y,m=cur.m+2;if(m>12){m=1;y++}return `${y}-${pad(m)}`})();
+  (settings.envelopes||[]).filter(e=>e.exc&&envActive(e,nk)).forEach(e=>next.push(`En ${MOIS[Number(nk.slice(5))-1]}, l'enveloppe exceptionnelle <b>${esc(e.name)}</b> est active (${eurS(num(e.budget))}) : garde de la marge.`));
+  if(!next.length)next.push(`Garde les mêmes budgets : ils te vont bien.`);
+  const envRow=x=>{const pill=x.sp>x.b+0.004?`<span class="pill bad">Dépassée de ${eurS(x.sp-x.b)}</span>`:x.r>=0.9?`<span class="pill w">Juste</span>`:`<span class="pill ok">Respectée · ${eurS(x.b-x.sp)} d'avance</span>`;
+    return `<div class="bl-env"><span>${esc(x.e.name)}</span>${pill}<small>${eur(x.sp)} sur ${eur(x.b)}${envAdj(x.e.id)?' (budget réajusté)':''}</small></div>`};
+  const scrim=document.createElement('div');scrim.className='scrim';
+  scrim.innerHTML=`<div class="sheet" role="dialog" aria-label="Bilan du mois"><span class="grab"></span>
+    <h2>Bilan de ${MOIS[cur.m]} ${cur.y}</h2>
+    <div class="bl-hero ${lvl==='top'?'':lvl}"><span class="v">${verdict}</span><p>${sentence}</p>
+      ${excSpent?`<p>Les ${eur(excSpent)} de dépenses exceptionnelles (${exc.map(e=>esc(e.name)).join(', ')}) étaient prévues : elles ne comptent pas comme un écart.</p>`:''}</div>
+    <div class="bl-grid"><div><span>Revenus</span><b>${eur(t.income)}</b></div><div><span>Dépensé</span><b>${eur(t.spent)}</b>${excCompte?`<span>dont ${eur(excCompte)} exceptionnel</span>`:''}</div>
+      <div><span>Épargné</span><b>${eur(t.saved)}</b></div><div><span>Reste</span><b>${eur(t.left)}</b>${excCompte?`<span>${eur(leftHors)} hors exceptionnel</span>`:''}</div></div>
+    ${rows.length?`<div class="rb-sec"><h3>Tes enveloppes</h3>${rows.map(envRow).join('')}</div>`:''}
+    ${exc.length?`<div class="rb-sec"><h3>Exceptionnelles</h3>${exc.map(e=>{const sp=envSpent(e.id),b=envBudget(e);return `<div class="bl-env"><span>${esc(e.name)}</span><span class="pill x">Prévu</span><small>${eur(sp)} sur ${eur(b)} · ${esc(periodTxt(e))}${sp>b?` · ${eur(sp-b)} au-dessus de ce que tu avais prévu, à garder en tête`:''}</small></div>`}).join('')}</div>`:''}
+    ${good.length?`<div class="rb-sec"><h3>Ce qui a bien marché</h3><ul class="bl-list">${good.map(x=>`<li>${x}</li>`).join('')}</ul></div>`:''}
+    ${watch.length?`<div class="rb-sec"><h3>À surveiller</h3><ul class="bl-list">${watch.map(x=>`<li>${x}</li>`).join('')}</ul></div>`:''}
+    <div class="rb-sec"><h3>Pour le mois prochain</h3><ul class="bl-list">${next.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+    <div class="btn-row"><button type="button" class="btn soft" id="blClose">Fermer</button></div></div>`;
+  document.body.appendChild(scrim);sheetEl=scrim;
+  scrim.addEventListener('click',ev=>{if(ev.target===scrim||ev.target.id==='blClose')closeSheet()});
+}
 // ---------- imprévus & réajustements ----------
 const envAdj=id=>num((month.envAdj||{})[id]);
+const envActive=(e,k)=>{k=k||MK();return !e.exc||((e.from||'0000-00')<=k&&k<=(e.to||'9999-99'))};
+const activeEnvs=()=>(settings.envelopes||[]).filter(e=>envActive(e));
+const fmtMK=k=>{if(!k)return '';const [y,m]=k.split('-').map(Number);return `${MC[m-1]} ${y}`};
+const periodTxt=e=>e.from&&e.to&&e.from!==e.to?`${fmtMK(e.from)} – ${fmtMK(e.to)}`:fmtMK(e.from||e.to);
 const envBudget=e=>Math.max(0,num(e.budget)+envAdj(e.id));
 const isImprevu=e=>e.kind==='imprevu'||/impr[ée]vu/i.test(e.name||'');
-const isCadeaux=e=>e.kind==='cadeaux'||/cadeau/i.test(e.name||'');
+const isCadeaux=e=>!e.exc&&(e.kind==='cadeaux'||/cadeau/i.test(e.name||''));
+const noelKey=()=>`${cur.m>=10?cur.y:cur.y}`;
+const hasNoel=()=>(settings.envelopes||[]).some(e=>e.exc&&e.kind==='noel'&&(e.to||'').startsWith(noelKey()));
 const r2=n=>Math.round(n*100)/100;
 function adjustEnv(from,to,amt){
   amt=r2(amt);if(amt<=0)return;
@@ -806,14 +899,16 @@ function envPresets(){
   const envs=settings.envelopes||[];const out=[];
   if(!envs.some(isImprevu))out.push(`<button class="btn soft" data-envpreset="imprevu">+ Imprévus</button>`);
   if(!envs.some(isCadeaux))out.push(`<button class="btn soft" data-envpreset="cadeaux">+ Cadeaux</button>`);
+  if(!hasNoel())out.push(`<button class="btn soft" data-envpreset="noel">+ Cadeaux de Noël</button>`);
   return out.length?`<div class="presets">${out.join('')}</div>`:'';
 }
 function presetEnv(kind){
+  if(kind==='noel'){const y=noelKey();envSheet(null,{name:'Cadeaux de Noël',budget:150,kind:'noel',exc:true,from:`${y}-11`,to:`${y}-12`,color:11,tip:"Enveloppe exceptionnelle : elle n'existe qu'en novembre et décembre, et le bilan ne la compte pas comme un écart. Le budget s'applique à chacun des deux mois."});return}
   if(kind==='imprevu')envSheet(null,{name:'Imprévus',budget:suggestImprevu(),kind:'imprevu',color:9,tip:"Conseil : environ 5 % de tes revenus. C'est l'enveloppe tampon, vidée en premier quand une autre déborde."});
   else envSheet(null,{name:'Cadeaux',budget:30,kind:'cadeaux',color:4,tip:"Conseil : 20 à 30 € par mois, et l'argent non dépensé sert pour les anniversaires et Noël."});
 }
 function rebalState(){
-  const envs=settings.envelopes||[], t=totals();
+  const envs=activeEnvs(), t=totals();
   const over=envs.map(e=>({e,o:r2(envSpent(e.id)-envBudget(e))})).filter(x=>x.o>0);
   const need=r2(over.reduce((a,x)=>a+x.o,0));
   const donors=envs.map(e=>({e,r:r2(envBudget(e)-envSpent(e.id))})).filter(x=>x.r>0&&!over.some(o=>o.e===x.e))
@@ -840,7 +935,7 @@ function rebalCard(always){
 }
 function rebalSheet(){
   closeSheet();
-  const st=rebalState(), t=st.t, envs=settings.envelopes||[];
+  const st=rebalState(), t=st.t, envs=activeEnvs();
   const imp=envs.find(isImprevu);
   const tips=[];
   if(!imp)tips.push([`Garde une enveloppe <b>Imprévus</b> d'environ 5 % de tes revenus (≈ ${eurS(suggestImprevu())}). C'est elle qu'on vide en premier.`,`<button class="btn soft" data-rbpreset="imprevu">Créer l'enveloppe Imprévus</button>`]);
@@ -885,7 +980,7 @@ function rebalSheet(){
   });
 }
 function transferSheet(){
-  const envs=settings.envelopes||[];
+  const envs=activeEnvs();
   if(envs.length<2){toast("Il faut au moins deux enveloppes.");return}
   const st=rebalState();
   const from=(st.donors[0]||{}).e||envs[0], to=(st.over[0]||{}).e||envs.find(e=>e!==from);
@@ -933,14 +1028,17 @@ function envDetail(id){
 function envSheet(existing,preset){
   const list=settings.envelopes||[];
   const e=existing||Object.assign({color:list.length%ENV_COLORS.length},preset||{});
-  openSheet({title:existing?"Modifier l'enveloppe":'Nouvelle enveloppe',note:e.tip||'',fields:[
+  openSheet({title:existing?"Modifier l'enveloppe":'Nouvelle enveloppe',note:e.tip||"Laisse les mois vides pour une enveloppe de tous les mois. Remplis-les pour une enveloppe exceptionnelle (Noël, vacances…), qui ne compte pas comme un écart dans le bilan.",fields:[
     {id:'name',label:'Nom',value:e.name||'',ph:'Soins & beauté, activités en couple…'},
     {id:'budget',label:'Budget par mois',type:'amount',value:e.budget??'',ph:'70 €'},
-    {id:'color',label:'Couleur',type:'color',value:e.color??list.indexOf(e)}],
+    {id:'color',label:'Couleur',type:'color',value:e.color??list.indexOf(e)},
+    {id:'from',label:'Exceptionnelle : du mois',type:'month',value:e.from||'',half:true},
+    {id:'to',label:'au mois',type:'month',value:e.to||'',half:true}],
     onSave:v=>{
       if(!v.name)return "Donne un nom à l'enveloppe.";
       const budget=num(v.budget);if(budget<=0)return "Indique un budget supérieur à 0.";
       const rec={id:e.id||uid(),name:v.name,budget,color:parseInt(v.color,10)||0};if(e.kind)rec.kind=e.kind;
+      if(v.from||v.to){const f=v.from||v.to,t2=v.to||v.from;if(t2<f)return "Le mois de fin doit être après le mois de début.";rec.exc=true;rec.from=f;rec.to=t2}
       const i=list.findIndex(x=>x.id===rec.id);if(i>=0)list[i]=rec;else list.push(rec);
       settings.envelopes=list;saveSettings();render();
     },
@@ -1094,7 +1192,7 @@ document.querySelectorAll('nav.tabs .t').forEach(b=>b.onclick=()=>{tab=b.dataset
 document.getElementById('fab').onclick=()=>expenseSheet(null);
 
 app.addEventListener('click',e=>{
-  const el=e.target.closest('[data-go],[data-env],[data-exp],[data-extra],[data-fixed],[data-week],[data-cat],[data-save],#addEnv,#addExtra,#addFixed,#addExp,#addSave,#clearCat,#addTR,#openRebal,[data-envpreset],[data-acc],[data-goal],[data-preset],#addAcc,#addGoal,#withdraw');
+  const el=e.target.closest('[data-go],[data-env],[data-exp],[data-extra],[data-fixed],[data-week],[data-cat],[data-save],#addEnv,#addExtra,#addFixed,#addExp,#addSave,#clearCat,#addTR,#openRebal,#openBilan,#prevBilan,[data-envedit],[data-envpreset],[data-acc],[data-goal],[data-preset],#addAcc,#addGoal,#withdraw');
   if(!el)return;
   if(el.dataset.go){tab=el.dataset.go;render();return}
   if(el.dataset.week){weekFilter=el.dataset.week;render();return}
@@ -1109,6 +1207,9 @@ app.addEventListener('click',e=>{
   if(el.id==='addAcc'){accSheet(null,'autre');return}
   if(el.id==='addGoal'){goalSheet(null);return}
   if(el.id==='openRebal'){rebalSheet();return}
+  if(el.id==='openBilan'){bilanSheet();return}
+  if(el.id==='prevBilan'){cur.m--;if(cur.m<0){cur.m=11;cur.y--}weekFilter='all';catFilter=null;subscribeMonth();setTimeout(bilanSheet,200);return}
+  if(el.dataset.envedit){envSheet((settings.envelopes||[]).find(x=>x.id===el.dataset.envedit));return}
   if(el.dataset.envpreset){presetEnv(el.dataset.envpreset);return}
   if(el.id==='addTR'){expenseSheet(null,'','tr');return}
   if(el.dataset.env){envDetail(el.dataset.env);return}
